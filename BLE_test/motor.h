@@ -35,6 +35,7 @@ class Motor {
       });
 
       adcAttachPin(hardware_.current_sense);
+      analogReadResolution(12);
       pinMode(hardware_.fault, INPUT);
       pinMode(hardware.disable, OUTPUT);
       digitalWrite(hardware.disable, HIGH);
@@ -72,7 +73,10 @@ class Motor {
     }
 
     float GetCurrent() const {
-      return analogRead(hardware_.current_sense);
+      const float adc_scale_factor = 3.3f / ((1 << 12) - 1);
+      const float resistor_divider_scale_factor = 2.0f;
+      const float current = adc_scale_factor * analogRead(hardware_.current_sense);
+      return current;
     }
 
     bool GetFault() const {
@@ -83,6 +87,7 @@ class Motor {
     static constexpr int PWM_RESOLUTION_BITS = 8;
     static constexpr int PWM_FREQUENCY_HZ = 30000;
     static constexpr int DUTY_CYCLE_SCALE = (1 << PWM_RESOLUTION_BITS) - 1;
+    static constexpr float CURRENT_SENSOR_RESISTOR_DIVIDER = 2.0f;
 
     void UpdateMotorOutputs() {
       const int inverted_scaled_duty_cycle = DUTY_CYCLE_SCALE * (1.0f - duty_cycle_);

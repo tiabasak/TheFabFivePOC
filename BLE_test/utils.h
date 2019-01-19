@@ -21,3 +21,5 @@ size_t println(T&& head, TailType&& ...tail) {
   r += println((tail)...);
   return r;
 }
+
+#define clamp(val, min, max) ((val) < (min) ? (min) : ((val) > (max) ? (max) : (val)))

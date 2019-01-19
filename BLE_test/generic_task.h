@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class GenericTask {
   public:
     GenericTask(const std::string& name, int stack_size = configMINIMAL_STACK_SIZE, int priority = 1) :

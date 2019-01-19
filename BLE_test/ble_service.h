@@ -11,6 +11,9 @@
 #include <BLEUtils.h>
 
 #include "utils.h"
+#include "motor_controller.h"
+#include "motor.h"
+#include "pid.h"
 
 #define SET_BIT(val, pos) val |= BIT(pos)
 #define STRINGIFY(STR) _STRINGIFY(STR)
@@ -75,7 +78,7 @@ class IBLEMessage : public BLECharacteristicCallbacks {
       return iRoboCarBLECharacteristicUUIDs::GetUUID(message_id_);
     }
 
-  protected:
+  private:
     static MessageID message_id_;
 };
 template<typename MessageData>
@@ -227,10 +230,11 @@ class iRoboCarBLEServer : public BLEServerCallbacks {
 
     template<typename Message>
     void RegisterMessage(BLEService* service) {
-      BLECharacteristic* characteristic = service->createCharacteristic(Message::uuid(),
+      Message* message = new Message;
+      BLECharacteristic* characteristic = service->createCharacteristic(message->uuid().c_str(),
                                           BLECharacteristic::PROPERTY_WRITE);
       characteristic->addDescriptor(new BLE2902());
-      characteristic->setCallbacks(new Message);
+      characteristic->setCallbacks(message);
     }
 
     bool device_connected_ = false;
