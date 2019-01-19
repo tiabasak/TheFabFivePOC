@@ -6,18 +6,18 @@
 #include "ble_service.h"
 #include "motor.h"
 #include "utils.h"
+#include "heartbeat_led.h"
+#include "motor_controller.h"
 
 iRoboCarBLEServer ble_server_;
+HeartBeatLed heartbeat_led_;
+MotorController motor_controller_;
 
 void setup() {
   Serial.begin(115200);
-  pinMode(5, OUTPUT);
   ble_server_.Init();
+  motor_controller_.Init();
+  heartbeat_led_.Init();
 }
 
-void loop() {
-  digitalWrite(5, HIGH);
-  delay(250);
-  digitalWrite(5, LOW);
-  delay(250);
-}
+void loop() {}

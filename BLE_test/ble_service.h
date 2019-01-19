@@ -33,6 +33,7 @@ enum MessageID {
   NumMessageIDs,
 };
 
+
 class iRoboCarBLECharacteristicUUIDs {
   public:
     static const std::string& GetUUID(MessageID message_id) {
@@ -42,7 +43,6 @@ class iRoboCarBLECharacteristicUUIDs {
   private:
     static const std::array<std::string, MessageID::NumMessageIDs> CHARACTERISTIC_UUIDS;
 };
-
 const std::array<std::string, NumMessageIDs> iRoboCarBLECharacteristicUUIDs::CHARACTERISTIC_UUIDS{{
     "c0de0001-feed-f00d-c0ff-eeb3d05ebeef", // SetLed
     "c0de0002-feed-f00d-c0ff-eeb3d05ebeef", // SetSteer
@@ -56,7 +56,6 @@ const std::array<std::string, NumMessageIDs> iRoboCarBLECharacteristicUUIDs::CHA
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 template<typename MessageData>
 class IBLEMessage : public BLECharacteristicCallbacks {
   public:
@@ -113,6 +112,7 @@ class SetSteerMessage : public IBLEMessage<SetSteerMessageData> {
     }
 };
 
+
 struct PACKED SetDriveMessageData {
   float drive_speed;
 };
@@ -125,6 +125,7 @@ class SetDriveMessage : public IBLEMessage<SetDriveMessageData> {
       DEBUG_LOG("Received SetDrive message, drive_speed = ", payload.drive_speed);
     }
 };
+
 
 struct PACKED SetPidMessageData {
   float p_gain;
@@ -143,6 +144,7 @@ class SetPidMessage : public IBLEMessage<SetPidMessageData> {
     }
 };
 
+
 struct PACKED SetNetworkNameMessageData {
   static constexpr int NETWORK_NAME_MESSAGE_SIZE = 32;
   char network_name[NETWORK_NAME_MESSAGE_SIZE];
@@ -157,6 +159,7 @@ class SetNetworkNameMessage : public IBLEMessage<SetNetworkNameMessageData> {
     }
 };
 
+
 struct PACKED SetPasswordMessageData {
   static constexpr int PASSWORD_MESSAGE_SIZE = 32;
   char password[PASSWORD_MESSAGE_SIZE];
@@ -170,6 +173,7 @@ class SetPasswordMessage : public IBLEMessage<SetPasswordMessageData> {
       DEBUG_LOG("Received SetPassword message, password = ", payload.password);
     }
 };
+
 
 struct PACKED ConnectToNetworkMessageData {};
 class ConnectToNetworkMessage : public IBLEMessage<ConnectToNetworkMessageData> {
